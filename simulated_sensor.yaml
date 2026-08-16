@@ -1,7 +1,8 @@
 spec: "1.0"
 interfaces:
   ASRL:
-    1: {}
+    1:
+      device: device 1
 devices:
   device 1:
     eom:

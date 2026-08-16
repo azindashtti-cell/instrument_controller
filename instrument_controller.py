@@ -1,13 +1,18 @@
+import os
 import pyvisa
 import time
 
 def main():
     print("--- Starting Instrument Control Sequence ---")
     
-    # 1. Load the simulated device using the YAML file
-    rm = pyvisa.ResourceManager('simulated_sensor.yaml@sim')
+    # 1. Get the absolute path to the YAML file to prevent path errors
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    yaml_path = os.path.join(current_dir, 'simulated_sensor.yaml')
     
-    # 2. Find connected devices
+    # 2. Load the simulated device
+    rm = pyvisa.ResourceManager(f'{yaml_path}@sim')
+    
+    # 3. Find connected devices
     resources = rm.list_resources()
     print(f"Detected devices: {resources}")
     
@@ -15,14 +20,14 @@ def main():
         print("No devices found. Exiting.")
         return
 
-    # 3. Connect to the first found device
+    # 4. Connect to the first found device
     instrument = rm.open_resource(resources[0])
     
-    # 4. Establish communication: Send *IDN? command
+    # 5. Establish communication: Send *IDN? command
     identity = instrument.query("*IDN?")
     print(f"Successfully connected to: {identity.strip()}")
     
-    # 5. Simulate a Data Acquisition campaign
+    # 6. Simulate a Data Acquisition campaign
     print("\n--- Starting Data Acquisition ---")
     measurements = []
     
@@ -36,7 +41,7 @@ def main():
     print("\n--- Acquisition Complete ---")
     print(f"Average Light Intensity: {sum(measurements)/len(measurements)} mW")
     
-    # 6. Safely close the connection
+    # 7. Safely close the connection
     instrument.close()
 
 if __name__ == "__main__":
