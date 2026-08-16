@@ -9,3 +9,9 @@ It was developed to showcase the ability to communicate with standard laboratory
 * Execution of standard SCPI queries.
 * Simulated multi-step data acquisition loop.
 * Safe resource management and error handling.
+## How to run
+
+1. Install the required dependencies:
+```bash
+pip install pyvisa pyvisa-sim
+python instrument_controller.py
