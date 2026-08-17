@@ -1,0 +1,32 @@
+spec: "1.0"
+
+devices:
+  device 1:
+    eom:
+      USB INSTR:
+        q: "\n"
+        r: "\n"
+    error_response:
+      command_error: "Command error"
+      query_error: "Query error"
+
+    dialogues:
+      - q: "*IDN?"
+        r: "SIM,Photodiode-DMM,SN00123,v1.0"
+
+    properties:
+      voltage:
+        default: 0.3200
+        getter:
+          q: "MEAS:VOLT:DC?"
+          r: "{:.4f}"
+        setter:
+          q: "VOLT {:.4f}"
+        specs:
+          type: float
+          min: 0
+          max: 10
+
+resources:
+  USB0::0x1111::0x2222::12345678::INSTR:
+    device: device 1
